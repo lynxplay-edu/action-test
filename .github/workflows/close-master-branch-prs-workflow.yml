@@ -1,0 +1,18 @@
+name: 'Close PRs that are opened from a forks master branch as they cannot be edited.'
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  close_invalid_prs:
+    runs-on: ubuntu-latest
+    if: '${{ github.head_ref == master }}'
+    steps:
+      - name: 'Close pull request from forked master branch'
+        uses: peter-evans/close-pull@v2
+        with:
+          pull-request-number: '${{ github.number }}'
+          comment: 'Automatically closing this PR.
+          
+          Please create a separate branch to submit your pull requests to allow maintainers to edit your proposed changes.'
